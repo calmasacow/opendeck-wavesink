@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>WaveSink level</title>
+		<link rel="stylesheet" href="sdpi.css" />
+		<link rel="stylesheet" href="wavesink.css" />
+		<script src="pi.js"></script>
+	</head>
+	<body>
+		<div id="offline" class="notice" style="display: none">WaveSink isn't running. Start it to pick from your inputs, mixes and profiles.</div>
+		<div class="sdpi-item">
+			<div class="sdpi-item-label" id="target-label">Input</div>
+			<select id="target" data-setting="target" data-choices="inputs" class="sdpi-item-value select"></select>
+		</div>
+		<div class="sdpi-item" id="mix-row">
+			<div class="sdpi-item-label">Controls</div>
+			<select data-setting="mix" data-choices="mixes" class="sdpi-item-value select">
+				<option value="" data-fixed>Fader (all mixes)</option>
+			</select>
+		</div>
+		<div class="sdpi-item" data-controller="Keypad">
+			<div class="sdpi-item-label">Press</div>
+			<select data-setting="press" data-default="mute" class="sdpi-item-value select">
+				<option value="mute">Toggle mute</option>
+				<option value="up">Volume up</option>
+				<option value="down">Volume down</option>
+				<option value="set">Set volume</option>
+			</select>
+		</div>
+		<div class="sdpi-item" data-show="press=up,down" data-controller="Keypad">
+			<div class="sdpi-item-label">Step</div>
+			<select data-setting="step" data-type="number" data-default="5" class="sdpi-item-value select">
+				<option value="1">1%</option>
+				<option value="2">2%</option>
+				<option value="5">5%</option>
+				<option value="10">10%</option>
+				<option value="20">20%</option>
+			</select>
+		</div>
+		<div class="sdpi-item" data-show="press=set" data-controller="Keypad">
+			<div class="sdpi-item-label">Volume (<span data-display="value"></span>%)</div>
+			<input data-setting="value" data-type="number" data-default="100" type="range" min="0" max="100" class="sdpi-item-value" />
+		</div>
+		<div class="sdpi-item" data-controller="Encoder">
+			<div class="sdpi-item-label">Per tick</div>
+			<select data-setting="step" data-type="number" data-default="5" class="sdpi-item-value select">
+				<option value="1">1%</option>
+				<option value="2">2%</option>
+				<option value="5">5%</option>
+				<option value="10">10%</option>
+			</select>
+		</div>
+		<div class="sdpi-item" data-controller="Encoder">
+			<div class="sdpi-item-label">Meter</div>
+			<label class="sdpi-item-value check"><input data-setting="meter" data-default="true" type="checkbox" /> Show live level</label>
+		</div>
+		<script>
+			// One page for Input and Mix: a Mix has no per-send target.
+			function onAction(action) {
+				if (action !== "us.echo.wavesink.mix") return;
+				document.getElementById("target-label").textContent = "Mix";
+				document.getElementById("target").dataset.choices = "mixes";
+				document.getElementById("mix-row").remove();
+			}
+		</script>
+	</body>
+</html>

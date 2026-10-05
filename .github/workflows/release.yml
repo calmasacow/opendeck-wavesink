@@ -1,0 +1,47 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    # Ubuntu 24.04's glibc, so the binary runs on it and everything newer.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - uses: dtolnay/rust-toolchain@4be7066ada62dd38de10e7b70166bc74ed198c30 # stable
+        with:
+          toolchain: stable
+          components: clippy, rustfmt
+
+      - name: Tag matches the manifest version
+        run: |
+          manifest=$(jq -r .Version assets/manifest.json)
+          cargo=$(grep -m1 '^version' Cargo.toml | cut -d'"' -f2)
+          tag=${GITHUB_REF_NAME#v}
+          if [ "$manifest" != "$tag" ] || [ "$cargo" != "$tag" ]; then
+            echo "::error::tag $tag, manifest $manifest, Cargo.toml $cargo must agree"
+            exit 1
+          fi
+
+      - name: Check
+        run: |
+          cargo fmt --check
+          cargo clippy --all-targets --locked -- -D warnings
+          cargo test --locked
+
+      - name: Package
+        run: scripts/package.sh
+
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" --title "WaveSink for OpenDeck $GITHUB_REF_NAME" \
+            --notes "Needs WaveSink 1.1.0 or newer. Install from OpenDeck's plugin store, or download us.echo.wavesink.sdPlugin.zip and choose it under Plugins → Install from file." \
+            dist/us.echo.wavesink.sdPlugin.zip dist/SHA256SUMS

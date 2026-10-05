@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>WaveSink solo</title>
+		<link rel="stylesheet" href="sdpi.css" />
+		<link rel="stylesheet" href="wavesink.css" />
+		<script src="pi.js"></script>
+	</head>
+	<body>
+		<div id="offline" class="notice" style="display: none">WaveSink isn't running. Start it to pick from your inputs, mixes and profiles.</div>
+		<div class="sdpi-item">
+			<div class="sdpi-item-label">Input</div>
+			<select data-setting="input" data-choices="inputs" class="sdpi-item-value select"></select>
+		</div>
+		<div class="hint">Mutes every other input. Press again to put their mutes back.</div>
+	</body>
+</html>

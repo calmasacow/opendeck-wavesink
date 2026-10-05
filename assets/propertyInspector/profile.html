@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>WaveSink profile</title>
+		<link rel="stylesheet" href="sdpi.css" />
+		<link rel="stylesheet" href="wavesink.css" />
+		<script src="pi.js"></script>
+	</head>
+	<body>
+		<div id="offline" class="notice" style="display: none">WaveSink isn't running. Start it to pick from your inputs, mixes and profiles.</div>
+		<div class="sdpi-item" data-controller="Keypad">
+			<div class="sdpi-item-label">Press</div>
+			<select data-setting="mode" data-default="load" class="sdpi-item-value select">
+				<option value="load">Load a profile</option>
+				<option value="next">Next profile</option>
+				<option value="previous">Previous profile</option>
+			</select>
+		</div>
+		<div class="sdpi-item" data-show="mode=load" data-controller="Keypad">
+			<div class="sdpi-item-label">Profile</div>
+			<select data-setting="profile" data-choices="profiles" class="sdpi-item-value select">
+				<option value="" data-fixed>Choose…</option>
+			</select>
+		</div>
+		<div class="hint" data-controller="Encoder">Turn to pick a profile, push to load it.</div>
+	</body>
+</html>

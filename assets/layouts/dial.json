@@ -1,0 +1,44 @@
+{
+	"$schema": "https://schemas.elgato.com/streamdeck/plugins/layout.json",
+	"id": "wavesink-dial",
+	"items": [
+		{ "key": "icon", "type": "pixmap", "rect": [10, 8, 40, 40] },
+		{
+			"key": "title",
+			"type": "text",
+			"rect": [58, 6, 136, 20],
+			"font": { "size": 15, "weight": 600 },
+			"alignment": "left",
+			"text-overflow": "ellipsis",
+			"color": "#d4d4d8"
+		},
+		{
+			"key": "value",
+			"type": "text",
+			"rect": [58, 24, 136, 28],
+			"font": { "size": 24, "weight": 700 },
+			"alignment": "left",
+			"color": "white"
+		},
+		{
+			"key": "volume",
+			"type": "bar",
+			"rect": [10, 60, 180, 12],
+			"value": 0,
+			"subtype": 4,
+			"border_w": 0,
+			"bar_bg_c": "#3f3f46",
+			"bar_fill_c": "#2563eb"
+		},
+		{
+			"key": "meter",
+			"type": "bar",
+			"rect": [10, 80, 180, 8],
+			"value": 0,
+			"subtype": 0,
+			"border_w": 0,
+			"bar_bg_c": "#27272a",
+			"bar_fill_c": "0:#16a34a,0.7:#ca8a04,1:#dc2626"
+		}
+	]
+}

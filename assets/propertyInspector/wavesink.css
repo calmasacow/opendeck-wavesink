@@ -1,0 +1,20 @@
+.notice {
+	margin: 8px 12px;
+	padding: 8px 10px;
+	border-left: 3px solid #f7821b;
+	background: var(--sdpi-background);
+	color: var(--sdpi-color);
+}
+
+.hint {
+	margin: 4px 12px 8px;
+	color: #8a8a8a;
+	line-height: 1.4;
+}
+
+label.check {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	color: var(--sdpi-color);
+}

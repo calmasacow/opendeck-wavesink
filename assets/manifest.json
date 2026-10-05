@@ -1,0 +1,95 @@
+{
+	"Name": "WaveSink",
+	"Description": "Control the WaveSink mixer: input and mix levels, mutes, routes, solo and profiles, with live meters on Stream Deck+ dials.",
+	"Author": "calmasacow",
+	"Version": "1.0.0",
+	"URL": "https://github.com/calmasacow/WaveSink",
+	"CodePaths": {
+		"x86_64-unknown-linux-gnu": "x86_64-unknown-linux-gnu/bin/opendeck-wavesink"
+	},
+	"CodePathLin": "x86_64-unknown-linux-gnu/bin/opendeck-wavesink",
+	"Icon": "icons/plugin",
+	"Category": "WaveSink",
+	"CategoryIcon": "icons/category",
+	"OS": [{ "Platform": "linux" }],
+	"Actions": [
+		{
+			"Icon": "icons/input",
+			"Name": "Input",
+			"States": [{ "Image": "icons/inputKey", "ShowTitle": false }],
+			"Controllers": ["Keypad", "Encoder"],
+			"Encoder": {
+				"layout": "layouts/dial.json",
+				"TriggerDescription": {
+					"Rotate": "Volume",
+					"Push": "Mute",
+					"Touch": "Mute"
+				}
+			},
+			"DisableAutomaticStates": true,
+			"SupportedInMultiActions": true,
+			"Tooltip": "An input's level and mute, on its fader or on one mix",
+			"UUID": "us.echo.wavesink.input",
+			"PropertyInspectorPath": "propertyInspector/level.html"
+		},
+		{
+			"Icon": "icons/mix",
+			"Name": "Mix",
+			"States": [{ "Image": "icons/mixKey", "ShowTitle": false }],
+			"Controllers": ["Keypad", "Encoder"],
+			"Encoder": {
+				"layout": "layouts/dial.json",
+				"TriggerDescription": {
+					"Rotate": "Volume",
+					"Push": "Mute",
+					"Touch": "Mute"
+				}
+			},
+			"DisableAutomaticStates": true,
+			"SupportedInMultiActions": true,
+			"Tooltip": "A mix's level and mute",
+			"UUID": "us.echo.wavesink.mix",
+			"PropertyInspectorPath": "propertyInspector/level.html"
+		},
+		{
+			"Icon": "icons/route",
+			"Name": "Route",
+			"States": [{ "Image": "icons/routeKey", "ShowTitle": false }],
+			"Controllers": ["Keypad"],
+			"DisableAutomaticStates": true,
+			"SupportedInMultiActions": true,
+			"Tooltip": "Send an input to a mix, or stop sending it",
+			"UUID": "us.echo.wavesink.route",
+			"PropertyInspectorPath": "propertyInspector/route.html"
+		},
+		{
+			"Icon": "icons/solo",
+			"Name": "Solo",
+			"States": [{ "Image": "icons/soloKey", "ShowTitle": false }],
+			"Controllers": ["Keypad"],
+			"DisableAutomaticStates": true,
+			"SupportedInMultiActions": true,
+			"Tooltip": "Hear one input alone; press again to restore",
+			"UUID": "us.echo.wavesink.solo",
+			"PropertyInspectorPath": "propertyInspector/solo.html"
+		},
+		{
+			"Icon": "icons/profile",
+			"Name": "Profile",
+			"States": [{ "Image": "icons/profileKey", "ShowTitle": false }],
+			"Controllers": ["Keypad", "Encoder"],
+			"Encoder": {
+				"layout": "layouts/dial.json",
+				"TriggerDescription": {
+					"Rotate": "Previous / next profile",
+					"Push": "Load the profile shown"
+				}
+			},
+			"DisableAutomaticStates": true,
+			"SupportedInMultiActions": true,
+			"Tooltip": "Load a WaveSink profile, or step through them",
+			"UUID": "us.echo.wavesink.profile",
+			"PropertyInspectorPath": "propertyInspector/profile.html"
+		}
+	]
+}
