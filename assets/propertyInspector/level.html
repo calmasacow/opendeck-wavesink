@@ -52,6 +52,18 @@
 			</select>
 		</div>
 		<div class="sdpi-item" data-controller="Encoder">
+			<label class="sdpi-item-label" for="touch">Touch</label>
+			<select id="touch" data-setting="touch" data-default="reset" class="sdpi-item-value select">
+				<option value="reset">Reset to default level</option>
+				<option value="mute">Toggle mute</option>
+			</select>
+		</div>
+		<div class="sdpi-item" data-show="touch=reset" data-controller="Encoder">
+			<label class="sdpi-item-label" for="default-level">Default level (<span data-display="default_level"></span>%)</label>
+			<input id="default-level" data-setting="default_level" data-type="number" data-default="100" type="range" min="0" max="100" class="sdpi-item-value" />
+		</div>
+		<div class="hint" data-controller="Encoder">Push the knob to toggle mute.</div>
+		<div class="sdpi-item" data-controller="Encoder">
 			<div class="sdpi-item-label">Meter</div>
 			<label class="sdpi-item-value check"><input data-setting="meter" data-default="true" type="checkbox" /> Show live level</label>
 		</div>

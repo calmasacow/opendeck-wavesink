@@ -1,8 +1,9 @@
 //! Input and Mix: a level and its mute.
 //!
 //! An Input targets the input's own fader, which feeds every mix, or one of
-//! its sends (the cell in a mix). On a dial: rotate for level, push or tap to
-//! mute. On a key: mute, step up or down, or jump to a level.
+//! its sends (the cell in a mix). On a dial: rotate for level, push to mute,
+//! tap to reset the level (or optionally mute). On a key: mute, step up or
+//! down, or jump to a level.
 
 use std::collections::HashSet;
 use std::sync::{LazyLock, Mutex};
@@ -34,6 +35,10 @@ pub struct LevelSettings {
 	pub step: Option<u8>,
 	/// The level "set" jumps to.
 	pub value: Option<u8>,
+	/// Touchscreen tap: "reset" (default) or "mute".
+	pub touch: Option<String>,
+	/// The level a touchscreen reset returns to (default 100%).
+	pub default_level: Option<u8>,
 	/// Show the live meter on the dial (default on).
 	pub meter: Option<bool>,
 }
@@ -45,6 +50,10 @@ impl LevelSettings {
 
 	fn meter(&self) -> bool {
 		self.meter.unwrap_or(true)
+	}
+
+	fn touch_volume(&self) -> Option<u8> {
+		(self.touch.as_deref() != Some("mute")).then(|| self.default_level.unwrap_or(100).min(100))
 	}
 }
 
@@ -360,6 +369,18 @@ async fn mute(instance: &Instance, settings: &LevelSettings) -> OpenActionResult
 	sent(instance, ok).await
 }
 
+async fn touch(instance: &Instance, settings: &LevelSettings) -> OpenActionResult<()> {
+	let uuid = &instance.action_uuid;
+	if !known(uuid, settings) {
+		return sent(instance, false).await;
+	}
+	let ok = match settings.touch_volume() {
+		Some(volume) => set(uuid, settings, volume),
+		None => toggle_mute(uuid, settings),
+	};
+	sent(instance, ok).await
+}
+
 macro_rules! level_action {
 	($name:ident, $uuid:expr) => {
 		pub struct $name;
@@ -430,7 +451,7 @@ macro_rules! level_action {
 				_position: (u16, u16),
 				_hold: bool,
 			) -> OpenActionResult<()> {
-				mute(instance, settings).await
+				touch(instance, settings).await
 			}
 
 			async fn property_inspector_did_appear(
@@ -565,6 +586,23 @@ mod tests {
 		assert!(view(INPUT, &settings("gone", ""), &snapshot()).is_none());
 		assert!(view(INPUT, &settings("sink_game", "gone"), &snapshot()).is_none());
 		assert!(view(MIX, &settings("", ""), &snapshot()).is_none());
+	}
+
+	#[test]
+	fn touch_defaults_to_reset_and_supports_custom_level_or_mute() {
+		// Existing settings without touch options also get the new default.
+		let mut s: LevelSettings = serde_json::from_str(r#"{"target":"sink_game"}"#).unwrap();
+		assert_eq!(s.touch_volume(), Some(100));
+		assert_eq!(LevelSettings::default().touch_volume(), Some(100));
+		s = serde_json::from_str(r#"{"touch":"reset","default_level":65}"#).unwrap();
+		assert_eq!(s.touch_volume(), Some(65));
+		s.default_level = Some(0);
+		assert_eq!(s.touch_volume(), Some(0));
+		s.default_level = Some(200);
+		assert_eq!(s.touch_volume(), Some(100));
+		s.touch = Some("mute".into());
+		assert_eq!(s.touch_volume(), None);
+		assert!(serde_json::from_str::<LevelSettings>(r#"{"default_level":-1}"#).is_err());
 	}
 
 	#[test]

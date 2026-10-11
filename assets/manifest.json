@@ -2,7 +2,7 @@
 	"Name": "WaveSink",
 	"Description": "Control the WaveSink mixer: input and mix levels, mutes, routes, solo and profiles, with live meters on Stream Deck+ dials.",
 	"Author": "calmasacow",
-	"Version": "1.0.0",
+	"Version": "1.1.0",
 	"URL": "https://github.com/calmasacow/WaveSink",
 	"CodePaths": {
 		"x86_64-unknown-linux-gnu": "x86_64-unknown-linux-gnu/bin/opendeck-wavesink"
@@ -23,7 +23,7 @@
 				"TriggerDescription": {
 					"Rotate": "Volume",
 					"Push": "Mute",
-					"Touch": "Mute"
+					"Touch": "Reset level / mute"
 				}
 			},
 			"DisableAutomaticStates": true,
@@ -42,7 +42,7 @@
 				"TriggerDescription": {
 					"Rotate": "Volume",
 					"Push": "Mute",
-					"Touch": "Mute"
+					"Touch": "Reset level / mute"
 				}
 			},
 			"DisableAutomaticStates": true,
